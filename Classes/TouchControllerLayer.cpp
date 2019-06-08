@@ -2,29 +2,32 @@
 
 USING_NS_CC;
 
-static ui::Widget::ccWidgetClickCallback s_cb;
+static ui::Widget::ccWidgetTouchCallback s_cb;
 static Vector<TouchControllerLayer*>layers;
 
 Layer* TouchControllerLayer::createScene()
 {
-	return createScene([](Ref* sender)
+	return createScene([](Ref* sender, ui::Widget::TouchEventType type)
 		{
-			std::string name = ((ui::Button*)sender)->getName();
-			Node* scene = ((Node*)sender)->getScene();
-			if (name.compare("btnLeft") == 0)
-				scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_LEFT_ARROW, true));
-			else if (name.compare("btnTop") == 0)
-				scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_UP_ARROW, true));
-			else if (name.compare("btnRight") == 0)
-				scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_RIGHT_ARROW, true));
-			else if (name.compare("btnBottom") == 0)
-				scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_DOWN_ARROW, true));
-			else if (name.compare("btnFire") == 0)
-				scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_ENTER, true));
+			if (type == ui::Widget::TouchEventType::BEGAN)
+			{
+				std::string name = ((ui::Button*)sender)->getName();
+				Node* scene = ((Node*)sender)->getScene();
+				if (name.compare("btnLeft") == 0)
+					scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_LEFT_ARROW, true));
+				else if (name.compare("btnTop") == 0)
+					scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_UP_ARROW, true));
+				else if (name.compare("btnRight") == 0)
+					scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_RIGHT_ARROW, true));
+				else if (name.compare("btnBottom") == 0)
+					scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_DOWN_ARROW, true));
+				else if (name.compare("btnFire") == 0)
+					scene->getEventDispatcher()->dispatchEvent(new EventKeyboard(EventKeyboard::KeyCode::KEY_ENTER, true));
+			}
 		});
 }
 
-Layer* TouchControllerLayer::createScene(ui::Widget::ccWidgetClickCallback cb)
+Layer* TouchControllerLayer::createScene(ui::Widget::ccWidgetTouchCallback cb)
 {
 	s_cb = cb;
 	auto layer = create();
@@ -112,12 +115,12 @@ bool TouchControllerLayer::init()
 	btnRight->setPosition(Vec2(btnRight->getContentSize().width, 0));
 	btnBottom->setPosition(Vec2(0, -btnBottom->getContentSize().height));
 
-	btnLeft->addClickEventListener(s_cb);
-	btnTop->addClickEventListener(s_cb);
-	btnRight->addClickEventListener(s_cb);
-	btnBottom->addClickEventListener(s_cb);
+	btnLeft->addTouchEventListener(s_cb);
+	btnTop->addTouchEventListener(s_cb);
+	btnRight->addTouchEventListener(s_cb);
+	btnBottom->addTouchEventListener(s_cb);
 
-	btnFire->addClickEventListener(s_cb);
+	btnFire->addTouchEventListener(s_cb);
 
 	addChild(spArrows);
 	addChild(btnFire);
@@ -130,11 +133,13 @@ bool TouchControllerLayer::init()
 
 	if (layers.size())
 		SetAllChildsOpacity(this, layers.at(0)->getOpacity());
-	auto listener = EventListenerMouse::create();
-	listener->onMouseDown = [](EventMouse* e)
+	else
+		SetAllChildsOpacity(this, 0);
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [](Touch* touch, Event* e)
 	{
 		Node* target = e->getCurrentTarget();
-		if (e->getCursorY() > Director::getInstance()->getVisibleSize().height / 2)
+		if (touch->getLocation().y > Director::getInstance()->getVisibleSize().height / 2)
 			SetLayerOpacity(target->getOpacity() ^ 0xFF);
 		return true;
 	};

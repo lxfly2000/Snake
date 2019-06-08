@@ -6,7 +6,7 @@ class TouchControllerLayer :public cocos2d::Layer
 {
 public:
 	static cocos2d::Layer* createScene();
-	static cocos2d::Layer* createScene(cocos2d::ui::Widget::ccWidgetClickCallback cb);
+	static cocos2d::Layer* createScene(cocos2d::ui::Widget::ccWidgetTouchCallback cb);
 	static void SetLayerOpacity(GLubyte o);
 
 	virtual bool init()override;
