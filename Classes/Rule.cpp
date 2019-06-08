@@ -1,12 +1,12 @@
 #include "Rule.h"
-#include <fstream>
+#include "cocos2d.h"
 
 static const char data_name[] = "savedata.dat";
+static bool data_loaded = false;
 
 
 Rule::Rule()
 {
-	ReadData();
 	room = 0;
 }
 
@@ -17,13 +17,17 @@ Rule::~Rule()
 
 void Rule::ReadData()
 {
-	std::ifstream save(data_name, std::ios_base::in | std::ios_base::binary);
-	if (save)
+	if (data_loaded)
+		return;
+	data_loaded = true;
+	auto fu = cocos2d::FileUtils::getInstance();
+	auto data = fu->getDataFromFile(fu->getWritablePath() + data_name);
+	if (!data.isNull())
 	{
-		for (int i = 0; i < 10; i++)
-			save.read(reinterpret_cast<char*>(highestscore + i), sizeof(int));
-		save.read(reinterpret_cast<char*>(&speed), sizeof(int));
-		save.close();
+		int i = 0;
+		for (; i < 10; i++)
+			memcpy(highestscore + i, data.getBytes() + i * sizeof(int), sizeof(int));
+		memcpy(&speed, data.getBytes() + i * sizeof(int), sizeof(int));
 	}
 	else
 	{
@@ -35,14 +39,15 @@ void Rule::ReadData()
 
 bool Rule::SaveData()
 {
-	std::ofstream save(data_name, std::ios_base::out | std::ios_base::binary);
-	if (!save)
-		return false;
-	for (int i = 0; i < 10; i++)
-		save.write(reinterpret_cast<char*>(highestscore + i), sizeof(int));
-	save.write(reinterpret_cast<char*>(&speed), sizeof(int));
-	save.close();
-	return true;
+	cocos2d::Data data;
+	int buf[11];
+	int i = 0;
+	for (; i < 10; i++)
+		memcpy(buf + i, highestscore + i, sizeof(int));
+	memcpy(buf + i, &speed, sizeof(int));
+	data.copy((unsigned char*)buf, sizeof(buf));
+	auto fu = cocos2d::FileUtils::getInstance();
+	return fu->writeDataToFile(data, fu->getWritablePath() + data_name);
 }
 
 void Rule::Reset()

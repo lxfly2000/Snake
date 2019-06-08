@@ -32,6 +32,7 @@ bool TitleScene::init()
 
 	addChild(rootNode);
 
+	SnakeRule.ReadData();
 	menuEntries[0] = static_cast<Label*>(rootNode->getChildByName("Text_Start"));
 	menuEntries[1] = static_cast<Label*>(rootNode->getChildByName("Text_Help"));
 	menuEntries[2] = static_cast<Label*>(rootNode->getChildByName("Text_Quit"));

@@ -11,7 +11,8 @@ static TextHAlignment s_align;
 Layer* MessageBoxLayer::createScene(Node* parent,const char* msg, const char* font, int fontsize,
 	TextHAlignment align,EventKeyboard::KeyCode keyOk)
 {
-	parent->pause();
+	if (parent)
+		parent->pause();
 	s_msg = msg;
 	s_font = font;
 	s_fontsize = fontsize;

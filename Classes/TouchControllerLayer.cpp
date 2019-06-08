@@ -140,7 +140,7 @@ bool TouchControllerLayer::init()
 	{
 		Node* target = e->getCurrentTarget();
 		if (touch->getLocation().y > Director::getInstance()->getVisibleSize().height / 2)
-			SetLayerOpacity(target->getOpacity() ^ 0xFF);
+			SetLayerOpacity(0xFF*touch->getLocation().x/Director::getInstance()->getVisibleSize().width);
 		return true;
 	};
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
