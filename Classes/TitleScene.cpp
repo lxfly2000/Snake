@@ -56,7 +56,7 @@ bool TitleScene::init()
 void TitleScene::onEnterTransitionDidFinish()
 {
 	if (SnakeRule.room != 1)
-		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM\\bgm_title.mp3");
+		CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM/bgm_title.mp3");
 	else
 		SnakeRule.room = 0;
 }
