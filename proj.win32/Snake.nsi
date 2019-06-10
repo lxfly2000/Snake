@@ -4,17 +4,21 @@
 !define PRODUCT_NAME "Snake"
 !define PRODUCT_VERSION "1.0"
 !define PRODUCT_PUBLISHER "lxfly2000"
-!define PRODUCT_WEB_SITE "https://github.com/lxfly2000/Snake"
+!define PRODUCT_WEB_SITE "http://github.com/lxfly2000/Snake"
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${__FILEDIR__}\res\game.ico"
+!define MUI_ICON "res\game.ico"
+!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
+
+; Uninstaller pages
+!insertmacro MUI_UNPAGE_INSTFILES
 
 ; Language files
 !insertmacro MUI_LANGUAGE "SimpChinese"
@@ -26,50 +30,64 @@ ManifestDPIAware true
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "Snake.exe"
-InstallDir "$TEMP\${PRODUCT_NAME}"
+InstallDir "$TEMP\Snake"
 ShowInstDetails show
+ShowUnInstDetails show
 
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "${__FILEDIR__}\Release.win32\glew32.dll"
-  File "${__FILEDIR__}\Release.win32\libcocos2d.dll"
-  File "${__FILEDIR__}\Release.win32\libcrypto-1_1.dll"
-  File "${__FILEDIR__}\Release.win32\libcurl.dll"
-  File "${__FILEDIR__}\Release.win32\libmpg123.dll"
-  File "${__FILEDIR__}\Release.win32\libogg.dll"
-  File "${__FILEDIR__}\Release.win32\libssl-1_1.dll"
-  File "${__FILEDIR__}\Release.win32\libvorbis.dll"
-  File "${__FILEDIR__}\Release.win32\libvorbisfile.dll"
-  File "${__FILEDIR__}\Release.win32\OpenAL32.dll"
+  File "Release.win32\glew32.dll"
+  File "Release.win32\libcocos2d.dll"
+  File "Release.win32\libcrypto-1_1.dll"
+  File "Release.win32\libcurl.dll"
+  File "Release.win32\libmpg123.dll"
+  File "Release.win32\libogg.dll"
+  File "Release.win32\libssl-1_1.dll"
+  File "Release.win32\libvorbis.dll"
+  File "Release.win32\libvorbisfile.dll"
+  File "Release.win32\OpenAL32.dll"
   SetOutPath "$INSTDIR\Resources"
-  File "${__FILEDIR__}\Release.win32\Resources\Arrows.png"
+  File "Release.win32\Resources\Arrows.png"
   SetOutPath "$INSTDIR\Resources\BGM"
-  File "${__FILEDIR__}\Release.win32\Resources\BGM\bgm_game.mp3"
-  File "${__FILEDIR__}\Release.win32\Resources\BGM\bgm_title.mp3"
+  File "Release.win32\Resources\BGM\bgm_game.mp3"
+  File "Release.win32\Resources\BGM\bgm_title.mp3"
   SetOutPath "$INSTDIR\Resources"
-  File "${__FILEDIR__}\Release.win32\Resources\Board.png"
+  File "Release.win32\Resources\Board.png"
   SetOutPath "$INSTDIR\Resources\res"
-  File "${__FILEDIR__}\Release.win32\Resources\res\Body.png"
-  File "${__FILEDIR__}\Release.win32\Resources\res\Food.png"
-  File "${__FILEDIR__}\Release.win32\Resources\res\GameScene.csb"
-  File "${__FILEDIR__}\Release.win32\Resources\res\Head.png"
-  File "${__FILEDIR__}\Release.win32\Resources\res\HelpScene.csb"
-  File "${__FILEDIR__}\Release.win32\Resources\res\Map.png"
-  File "${__FILEDIR__}\Release.win32\Resources\res\Title.csb"
-  File "${__FILEDIR__}\Release.win32\Resources\res\TitleBG.png"
+  File "Release.win32\Resources\res\Body.png"
+  File "Release.win32\Resources\res\Food.png"
+  File "Release.win32\Resources\res\GameScene.csb"
+  File "Release.win32\Resources\res\Head.png"
+  File "Release.win32\Resources\res\HelpScene.csb"
+  File "Release.win32\Resources\res\Map.png"
+  File "Release.win32\Resources\res\Title.csb"
+  File "Release.win32\Resources\res\TitleBG.png"
   SetOutPath "$INSTDIR\Resources\SE"
-  File "${__FILEDIR__}\Release.win32\Resources\SE\fail.wav"
-  File "${__FILEDIR__}\Release.win32\Resources\SE\food.wav"
+  File "Release.win32\Resources\SE\fail.wav"
+  File "Release.win32\Resources\SE\food.wav"
   SetOutPath "$INSTDIR"
-  File "${__FILEDIR__}\Release.win32\Snake.exe"
-  File "${__FILEDIR__}\Release.win32\sqlite3.dll"
-  File "${__FILEDIR__}\Release.win32\uv.dll"
-  File "${__FILEDIR__}\Release.win32\websockets.dll"
-  File "${__FILEDIR__}\Release.win32\zlib1.dll"
+  File "Release.win32\Snake.exe"
+  File "Release.win32\sqlite3.dll"
+  File "Release.win32\uv.dll"
+  File "Release.win32\websockets.dll"
+  File "Release.win32\zlib1.dll"
+  
   SetAutoClose true
 SectionEnd
 
 Section -Post
-  Exec "$INSTDIR\Snake.exe"
+  WriteUninstaller "$INSTDIR\uninst.exe"
+  Exec "$INSTDIR\uninst.exe"
+SectionEnd
+
+
+Function un.onInit
+  ExecWait "$INSTDIR\Snake.exe"
+FunctionEnd
+
+Section Uninstall
+  RMDir /r "$INSTDIR"
+
+  SetAutoClose true
 SectionEnd
