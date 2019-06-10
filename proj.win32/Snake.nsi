@@ -38,8 +38,22 @@ ShowUnInstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File /r "Release.win32\*"
-
+  File "Release.win32\glew32.dll"
+  File "Release.win32\libcocos2d.dll"
+  File "Release.win32\libcrypto-1_1.dll"
+  File "Release.win32\libcurl.dll"
+  File "Release.win32\libmpg123.dll"
+  File "Release.win32\libogg.dll"
+  File "Release.win32\libssl-1_1.dll"
+  File "Release.win32\libvorbis.dll"
+  File "Release.win32\libvorbisfile.dll"
+  File "Release.win32\OpenAL32.dll"
+  File "Release.win32\sqlite3.dll"
+  File "Release.win32\uv.dll"
+  File "Release.win32\websockets.dll"
+  File "Release.win32\zlib1.dll"
+  File "Release.win32\Snake.exe"
+  File /r "Release.win32\Resources"
   SetAutoClose true
 SectionEnd
 
