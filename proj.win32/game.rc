@@ -66,13 +66,13 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "game Module\0"
+            VALUE "CompanyName", "lxfly2000\0"
+            VALUE "FileDescription", "Snake\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "game\0"
-            VALUE "LegalCopyright", "Copyright \0"
+            VALUE "InternalName", "Snake\0"
+            VALUE "LegalCopyright", "Copyright (C) 2019 lxfly2000\0"
             VALUE "OriginalFilename", "game.exe\0"
-            VALUE "ProductName", "game Module\0"
+            VALUE "ProductName", "Snake\0"
             VALUE "ProductVersion", "1, 0, 0, 1\0"
         END
     END
