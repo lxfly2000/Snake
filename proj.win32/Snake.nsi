@@ -7,7 +7,7 @@ Unicode true
 !define PRODUCT_NAME "Snake"
 !define PRODUCT_VERSION "1.0"
 !define PRODUCT_PUBLISHER "lxfly2000"
-!define PRODUCT_WEB_SITE "http://github.com/lxfly2000/Snake"
+!define PRODUCT_WEB_SITE "https://github.com/lxfly2000/Snake"
 
 ; MUI 1.67 compatible ------
 !include "MUI2.nsh"
