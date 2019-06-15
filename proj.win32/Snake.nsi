@@ -46,6 +46,18 @@ VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "LegalCopyright" "Copyright (C) 2019 $
 VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "FileDescription" "${PRODUCT_NAME} 安装程序"
 VIAddVersionKey /LANG=${LANG_SIMPCHINESE} "FileVersion" "1.0.0.0"
 
+Function CheckVCRedist
+  Pop $0
+  Pop $1
+  Pop $2
+  IfFileExists "$SYSDIR\$0" 0 +2
+  Return
+  NSISdl::download /TRANSLATE2 "正在下载 %s，请等待完成后选择“是”允许运行……" "连接中……" "（剩余1秒）" "（剩余1分钟）" "（剩余1小时）" "（剩余%u秒）" "（剩余%u分钟）" "（剩余%u小时）" "已下载 %s KB（%d%%），总计 %s KB，速度 %u.%01u KB/秒" /TIMEOUT=10000 $1 "$INSTDIR\$2"
+  Pop $R0 ;Get the return value
+  StrCmp $R0 "success" 0 +2
+  ExecShellWait "open" "$INSTDIR\$2" "/passive /norestart"
+FunctionEnd
+
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
@@ -66,6 +78,27 @@ Section "MainSection" SEC01
   File "Release.win32\Snake.exe"
   File /r "Release.win32\Resources"
   SetAutoClose true
+
+  Push "vcredist_x86(10).exe"
+  Push "http://download.microsoft.com/download/C/6/D/C6D0FD4E-9E53-4897-9B91-836EBA2AACD3/vcredist_x86.exe"
+  Push "msvcr100.dll"
+  Call CheckVCRedist
+  Push "vcredist_x86(12).exe"
+  Push "http://download.microsoft.com/download/9/C/D/9CD480DC-0301-41B0-AAAB-FE9AC1F60237/VSU4/vcredist_x86.exe"
+  Push "msvcr110.dll"
+  Call CheckVCRedist
+  Push "vcredist_x86(13).exe"
+  Push "http://download.microsoft.com/download/F/3/5/F3500770-8A08-488E-94B6-17A1E1DD526F/vcredist_x86.exe"
+  Push "msvcr120.dll"
+  Call CheckVCRedist
+  Push "vcredist_x86(19).exe"
+  Push "http://download.visualstudio.microsoft.com/download/pr/c8edbb87-c7ec-4500-a461-71e8912d25e9/99ba493d660597490cbb8b3211d2cae4/vc_redist.x86.exe"
+  Push "vcruntime140.dll"
+  Call CheckVCRedist
+  Push "vcredist_x86(19).exe"
+  Push "http://download.visualstudio.microsoft.com/download/pr/c8edbb87-c7ec-4500-a461-71e8912d25e9/99ba493d660597490cbb8b3211d2cae4/vc_redist.x86.exe"
+  Push "msvcp140.dll"
+  Call CheckVCRedist
 SectionEnd
 
 Section -Post
