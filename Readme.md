@@ -2,7 +2,7 @@
 这是一个用 Cocos2d-x 编写的贪吃蛇小游戏。
 
 ## 运行环境
-* Windows 7/8/8.1/10
+* Windows Vista/7/8/8.1/10
 * 安卓4.1(API16)及以上
 
 Windows 端需安装VC++运行库（[下载](https://visualstudio.microsoft.com/downloads/)）
