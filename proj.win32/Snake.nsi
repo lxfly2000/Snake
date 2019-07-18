@@ -58,6 +58,16 @@ Function CheckVCRedist
   ExecShellWait "open" "$INSTDIR\$2" "/passive /norestart"
 FunctionEnd
 
+!include "WinVer.nsh"
+
+Function .onInit
+  ;让我康康你运行的是不是XP啊？
+  ${IfNot} ${AtLeastWinVista}
+    MessageBox MB_ICONEXCLAMATION "当前运行的操作系统不支持运行此程序，$\n请更新至 Windows Vista 或以上版本后安装。$\n$\n支持的操作系统：$\nWindows Vista$\tWindows Server 2008$\nWindows 7$\tWindows Server 2008 R2$\nWindows 8$\tWindows Server 2012$\nWindows 8.1$\tWindows Server 2012 R2$\nWindows 10$\tWindows Server 2016"
+    Abort
+  ${EndIf}
+FunctionEnd
+
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
