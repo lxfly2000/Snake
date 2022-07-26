@@ -57,7 +57,7 @@ Function CheckVCRedist
   StrCmp $R0 "OK" 0 +3
   ExecShellWait "open" "$INSTDIR\$2" "/passive /norestart"
   Return
-  MessageBox MB_ICONEXCLAMATION "下载$\n$1$\n失败请$R0$\n手动下载安装。$\n$\n如需复制链接请按 Ctrl+C."
+  MessageBox MB_ICONEXCLAMATION "下载$\n$1$\n失败：$R0$\n请手动下载安装。$\n$\n如需复制链接请按 Ctrl+C."
 FunctionEnd
 
 !include "WinVer.nsh"
