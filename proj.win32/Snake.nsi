@@ -54,8 +54,10 @@ Function CheckVCRedist
   Return
   NSISdl::download /TRANSLATE2 "正在下载 %s，请等待完成后选择“是”允许运行……" "连接中……" "（剩余1秒）" "（剩余1分钟）" "（剩余1小时）" "（剩余%u秒）" "（剩余%u分钟）" "（剩余%u小时）" "已下载 %s KB（%d%%），总计 %s KB，速度 %u.%01u KB/秒" /TIMEOUT=10000 $1 "$INSTDIR\$2"
   Pop $R0 ;Get the return value
-  StrCmp $R0 "success" 0 +2
+  StrCmp $R0 "success" 0 +3
   ExecShellWait "open" "$INSTDIR\$2" "/passive /norestart"
+  Return
+  MessageBox MB_ICONEXCLAMATION "下载$\n$1$\n失败，请手动下载安装。$\n$\n如需复制链接请按 Ctrl+C."
 FunctionEnd
 
 !include "WinVer.nsh"
