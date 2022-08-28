@@ -52,9 +52,9 @@ Function CheckVCRedist
   Pop $2
   IfFileExists "$SYSDIR\$0" 0 +2
   Return
-  inetc::get /TRANSLATE "正在下载 %s，请等待完成后选择“是”允许运行……" "连接中……" "秒" "分钟" "小时" "" "已下载 %d KB（%d%%），总计 %d KB，速度 %d.%01d KB/秒" "（剩余%d%s%s）" /TIMEOUT=10000 $1 "$INSTDIR\$2"
-  Pop $R0 ;Get the return value
-  StrCmp $R0 "OK" 0 +3
+  ;inetc::get /TRANSLATE "正在下载 %s，请等待完成后选择“是”允许运行……" "连接中……" "秒" "分钟" "小时" "" "已下载 %d KB（%d%%），总计 %d KB，速度 %d.%01d KB/秒" "（剩余%d%s%s）" /TIMEOUT=10000 $1 "$INSTDIR\$2"
+  ;Pop $R0 ;Get the return value
+  ;StrCmp $R0 "OK" 0 +3
   ExecShellWait "open" "$INSTDIR\$2" "/passive /norestart"
   Return
   MessageBox MB_ICONEXCLAMATION "下载$\n$1$\n失败：$R0$\n请手动下载安装。$\n$\n如需复制链接请按 Ctrl+C."
@@ -89,6 +89,10 @@ Section "MainSection" SEC01
   File "Release.win32\zlib1.dll"
   File "Release.win32\Snake.exe"
   File /r "Release.win32\Resources"
+  File "vcredist_x86(10).exe"
+  File "vcredist_x86(12).exe"
+  File "vcredist_x86(13).exe"
+  File "vcredist_x86(19).exe"
   SetAutoClose true
 
   Push "vcredist_x86(10).exe"
